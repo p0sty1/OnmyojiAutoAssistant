@@ -1,0 +1,66 @@
+{
+  "coordinate_space": [
+    1280,
+    720
+  ],
+  "scale": "2/3",
+  "interpolation": "cv2.INTER_AREA",
+  "templates": {
+    "common/helper.png": {
+      "source_name": "helper.png",
+      "source_sha256": "f406ff1f1182d7e4fea7cefa5251b64276f86438c29071ab709e8ad7701e3541",
+      "source_size": [
+        87,
+        79
+      ],
+      "output_sha256": "e128043463c8c92f0691d1c517d23100f004aaa362434687e3b87dbe8133dcc5",
+      "output_size": [
+        58,
+        53
+      ]
+    },
+    "tower/start.png": {
+      "source_name": "start.png",
+      "source_sha256": "39661df3c89fa89563e897c764fe7769bce0d3a6c894732b2b30850342d62f85",
+      "source_size": [
+        209,
+        169
+      ],
+      "output_sha256": "b5859a9fded6a94a7deebae71fc96699cb1a2e1af69baedbadbce981cb43b4f9",
+      "output_size": [
+        139,
+        113
+      ]
+    },
+    "tower/continue.png": {
+      "source_name": "End.png",
+      "source_sha256": "aacab588576ca899a339e9af611e6d4da3e28586077ae067ef9b9b2f01065146",
+      "source_size": [
+        864,
+        105
+      ],
+      "output_sha256": "a2482ff983a92cc0fc258bec8cde42ecd54f7689a7a4f442a7c04612c30ded85",
+      "output_size": [
+        576,
+        70
+      ]
+    },
+    "tower/gold.png": {
+      "source_name": "gold.png",
+      "source_sha256": "1436837cc62b8d534a855aa237f2254443695b1e517d534b4e94a82fe721ee4d",
+      "source_size": [
+        306,
+        112
+      ],
+      "output_sha256": "17ed2c016db2f227ff6cdcc379b868cdc1785af278ec491d2fb3f7e9bcccd3b5",
+      "output_size": [
+        204,
+        75
+      ]
+    }
+  },
+  "fixtures": {
+    "positive_composite.png": "Synthetic: all four scaled templates pasted into their configured ROIs.",
+    "negative_non_tower.png": "Real 1920x1080 game screenshot scaled to 1280x720; none of the four tower states is present."
+  }
+}

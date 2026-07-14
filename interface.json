@@ -1,0 +1,38 @@
+{
+    "interface_version": 2,
+    "name": "YYS520Helper",
+    "label": "阴阳师 520 助手",
+    "title": "阴阳师 520 助手",
+    "version": "0.1.0",
+    "description": "基于 MaaFramework 的阴阳师自动化项目，包含活动爬塔与个人突破两个独立任务。",
+    "welcome": "首次使用前请启动一个 16:9、分辨率不低于 1280×720 的安卓模拟器，并在 MXU 中确认设备已连接。",
+    "controller": [
+        {
+            "name": "Android",
+            "label": "安卓模拟器",
+            "description": "通过 MaaToolkit 发现设备并由 MaaFramework 自动选择 ADB 截图与输入方式。",
+            "type": "Adb",
+            "display_short_side": 720
+        }
+    ],
+    "resource": [
+        {
+            "name": "base",
+            "label": "基础资源",
+            "description": "适用于 16:9 安卓画面的 720p 标准资源。",
+            "path": [
+                "./resource_pack/base"
+            ],
+            "controller": [
+                "Android"
+            ]
+        }
+    ],
+    "agent": {
+        "child_exec": "./agent/runtime/yys520_agent.exe"
+    },
+    "import": [
+        "./tasks/tower.json",
+        "./tasks/realm_raid.json"
+    ]
+}

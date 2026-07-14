@@ -1,0 +1,22 @@
+/.venv/
+/.pytest_cache/
+/build/
+/dist/
+/release/
+/maafw/
+/agent/runtime/
+/mxu.exe
+/mxu.pdb
+/tools/schemas/
+/config/
+/debug/
+__pycache__/
+*.pyc
+
+# Preserved legacy migration inputs; the normalized copies live under resource_pack/.
+/adbver.exe
+/End.png
+/gold.png
+/helper.png
+/screen.png
+/start.png

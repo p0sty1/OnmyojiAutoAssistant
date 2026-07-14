@@ -1,0 +1,684 @@
+{
+  "YYSRealmRaid": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    },
+    "next": [
+      "YYSRealmRaid.Reset"
+    ],
+    "rate_limit": 200,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.Reset": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "Custom",
+      "param": {
+        "custom_action": "YYSRealmRaid.State",
+        "custom_action_param": {
+          "op": "reset",
+          "stuck_start_limit": 10,
+          "ninth_exit_count": 3
+        }
+      }
+    },
+    "next": [
+      "YYSRealmRaid.Scan"
+    ],
+    "rate_limit": 200,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.Scan": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    },
+    "next": [
+      "YYSRealmRaid.Helper",
+      "YYSRealmRaid.Page",
+      "YYSRealmRaid.NotPage"
+    ],
+    "rate_limit": 300,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.Helper": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "common/helper.png",
+        "roi": [
+          900,
+          0,
+          380,
+          240
+        ],
+        "threshold": 0.85,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "next": [
+      "YYSRealmRaid.AbortAttempt"
+    ],
+    "post_delay": 400,
+    "rate_limit": 250,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.Page": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "realm_raid/page.png",
+        "roi": [
+          100,
+          0,
+          1080,
+          200
+        ],
+        "threshold": 0.75,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    },
+    "next": [
+      "YYSRealmRaid.PageStart",
+      "YYSRealmRaid.PageReward",
+      "YYSRealmRaid.Slot"
+    ],
+    "rate_limit": 250,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.PageStart": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "realm_raid/start.png",
+        "roi": [
+          860,
+          400,
+          420,
+          320
+        ],
+        "threshold": 0.8,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "next": [
+      "YYSRealmRaid.RecordStart"
+    ],
+    "post_delay": 350,
+    "rate_limit": 250,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.PageReward": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "realm_raid/reward.png",
+        "roi": [
+          420,
+          220,
+          440,
+          400
+        ],
+        "threshold": 0.72,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "next": [
+      "YYSRealmRaid.AbortAttempt"
+    ],
+    "post_delay": 400,
+    "rate_limit": 250,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.Slot": {
+    "recognition": {
+      "type": "Custom",
+      "param": {
+        "custom_recognition": "YYSRealmRaid.NextSlot",
+        "custom_recognition_param": {},
+        "roi": [
+          148,
+          147,
+          1056,
+          345
+        ]
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "next": [
+      "YYSRealmRaid.AfterSlotNonStart"
+    ],
+    "post_delay": 350,
+    "rate_limit": 250,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.AfterSlotNonStart": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "Custom",
+      "param": {
+        "custom_action": "YYSRealmRaid.State",
+        "custom_action_param": {
+          "op": "non_start"
+        }
+      }
+    },
+    "next": [
+      "YYSRealmRaid.AfterSlotScan"
+    ],
+    "rate_limit": 200,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.AfterSlotScan": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    },
+    "next": [
+      "YYSRealmRaid.AfterSlotHelper",
+      "YYSRealmRaid.AfterSlotStart"
+    ],
+    "rate_limit": 250,
+    "timeout": 1500,
+    "on_error": [
+      "YYSRealmRaid.AdvanceSlot"
+    ]
+  },
+  "YYSRealmRaid.AfterSlotHelper": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "common/helper.png",
+        "roi": [
+          900,
+          0,
+          380,
+          240
+        ],
+        "threshold": 0.85,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "next": [
+      "YYSRealmRaid.AbortAttempt"
+    ],
+    "post_delay": 400,
+    "rate_limit": 250,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.AfterSlotStart": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "realm_raid/start.png",
+        "roi": [
+          860,
+          400,
+          420,
+          320
+        ],
+        "threshold": 0.8,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "next": [
+      "YYSRealmRaid.RecordStart"
+    ],
+    "post_delay": 350,
+    "rate_limit": 250,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.AdvanceSlot": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "Custom",
+      "param": {
+        "custom_action": "YYSRealmRaid.State",
+        "custom_action_param": {
+          "op": "advance_slot"
+        }
+      }
+    },
+    "next": [
+      "YYSRealmRaid.Scan"
+    ],
+    "rate_limit": 200,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.AbortAttempt": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "Custom",
+      "param": {
+        "custom_action": "YYSRealmRaid.State",
+        "custom_action_param": {
+          "op": "abort_attempt"
+        }
+      }
+    },
+    "next": [
+      "YYSRealmRaid.Scan"
+    ],
+    "rate_limit": 200,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.NotPage": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "Custom",
+      "param": {
+        "custom_action": "YYSRealmRaid.State",
+        "custom_action_param": {
+          "op": "leave_page"
+        }
+      }
+    },
+    "next": [
+      "YYSRealmRaid.GlobalStart",
+      "YYSRealmRaid.Reward",
+      "YYSRealmRaid.Idle"
+    ],
+    "rate_limit": 250,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.GlobalStart": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "realm_raid/start.png",
+        "roi": [
+          860,
+          400,
+          420,
+          320
+        ],
+        "threshold": 0.8,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "next": [
+      "YYSRealmRaid.RecordStart"
+    ],
+    "post_delay": 350,
+    "rate_limit": 250,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.Reward": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "realm_raid/reward.png",
+        "roi": [
+          420,
+          220,
+          440,
+          400
+        ],
+        "threshold": 0.72,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "next": [
+      "YYSRealmRaid.AbortAttempt"
+    ],
+    "post_delay": 400,
+    "rate_limit": 250,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.Idle": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "Custom",
+      "param": {
+        "custom_action": "YYSRealmRaid.State",
+        "custom_action_param": {
+          "op": "idle"
+        }
+      }
+    },
+    "next": [
+      "YYSRealmRaid.Scan"
+    ],
+    "post_delay": 300,
+    "rate_limit": 200,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.RecordStart": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "Custom",
+      "param": {
+        "custom_action": "YYSRealmRaid.State",
+        "custom_action_param": {
+          "op": "record_start"
+        }
+      }
+    },
+    "next": [
+      "YYSRealmRaid.Scan"
+    ],
+    "rate_limit": 200,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.StopStuck"
+    ]
+  },
+  "YYSRealmRaid.NinthExit": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "ClickKey",
+      "param": {
+        "key": 111
+      }
+    },
+    "next": [
+      "YYSRealmRaid.NinthNonStart"
+    ],
+    "pre_delay": 1500,
+    "post_delay": 300,
+    "rate_limit": 200,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.NinthNonStart": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "Custom",
+      "param": {
+        "custom_action": "YYSRealmRaid.State",
+        "custom_action_param": {
+          "op": "non_start"
+        }
+      }
+    },
+    "next": [
+      "YYSRealmRaid.ConfirmExit"
+    ],
+    "rate_limit": 250,
+    "timeout": 6000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.ConfirmExit": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "realm_raid/confirm.png",
+        "roi": [
+          340,
+          280,
+          600,
+          400
+        ],
+        "threshold": 0.7,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "next": [
+      "YYSRealmRaid.Retry"
+    ],
+    "post_delay": 300,
+    "rate_limit": 250,
+    "timeout": 6000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.Retry": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "realm_raid/retry.png",
+        "roi": [
+          720,
+          240,
+          560,
+          480
+        ],
+        "threshold": 0.7,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "next": [
+      "YYSRealmRaid.ConfirmRetry",
+      "YYSRealmRaid.SpecialDone"
+    ],
+    "post_delay": 500,
+    "rate_limit": 250,
+    "timeout": 1000,
+    "on_error": [
+      "YYSRealmRaid.SpecialDone"
+    ]
+  },
+  "YYSRealmRaid.ConfirmRetry": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "realm_raid/confirm_retry.png",
+        "roi": [
+          340,
+          280,
+          600,
+          400
+        ],
+        "threshold": 0.7,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "next": [
+      "YYSRealmRaid.SpecialDone"
+    ],
+    "post_delay": 300,
+    "rate_limit": 200,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.SpecialDone"
+    ]
+  },
+  "YYSRealmRaid.SpecialDone": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "Custom",
+      "param": {
+        "custom_action": "YYSRealmRaid.State",
+        "custom_action_param": {
+          "op": "non_start"
+        }
+      }
+    },
+    "next": [
+      "YYSRealmRaid.Scan"
+    ],
+    "rate_limit": 200,
+    "timeout": 2000,
+    "on_error": [
+      "YYSRealmRaid.Timeout"
+    ]
+  },
+  "YYSRealmRaid.StopStuck": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "StopTask",
+      "param": {}
+    }
+  },
+  "YYSRealmRaid.Timeout": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "StopTask",
+      "param": {}
+    }
+  }
+}

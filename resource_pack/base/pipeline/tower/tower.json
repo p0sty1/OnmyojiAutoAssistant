@@ -1,0 +1,315 @@
+{
+  "Tower.Entry": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    },
+    "next": [
+      "Tower.Helper",
+      "Tower.Challenge",
+      "Tower.StopAtChallenge",
+      "Tower.Continue",
+      "Tower.Gold"
+    ],
+    "rate_limit": 400,
+    "timeout": 30000,
+    "on_error": [
+      "Tower.Timeout"
+    ]
+  },
+  "Tower.Helper": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "common/helper.png",
+        "roi": [
+          900,
+          0,
+          380,
+          240
+        ],
+        "threshold": 0.85,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "next": [
+      "Tower.HelperGone"
+    ],
+    "pre_delay": 100,
+    "post_delay": 600,
+    "rate_limit": 400,
+    "timeout": 10000,
+    "on_error": [
+      "Tower.Timeout"
+    ]
+  },
+  "Tower.HelperGone": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "common/helper.png",
+        "roi": [
+          900,
+          0,
+          380,
+          240
+        ],
+        "threshold": 0.85,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    },
+    "inverse": true,
+    "next": [
+      "Tower.Helper",
+      "Tower.Challenge",
+      "Tower.StopAtChallenge",
+      "Tower.Continue",
+      "Tower.Gold"
+    ],
+    "rate_limit": 400,
+    "timeout": 30000,
+    "on_error": [
+      "Tower.Timeout"
+    ]
+  },
+  "Tower.Challenge": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "tower/start.png",
+        "roi": [
+          860,
+          400,
+          420,
+          320
+        ],
+        "threshold": 0.8,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "max_hit": 1,
+    "next": [
+      "Tower.ChallengeGone"
+    ],
+    "pre_delay": 100,
+    "post_delay": 1000,
+    "rate_limit": 400,
+    "timeout": 10000,
+    "on_error": [
+      "Tower.Timeout"
+    ]
+  },
+  "Tower.ChallengeGone": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "tower/start.png",
+        "roi": [
+          860,
+          400,
+          420,
+          320
+        ],
+        "threshold": 0.8,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    },
+    "inverse": true,
+    "next": [
+      "Tower.Helper",
+      "Tower.Challenge",
+      "Tower.StopAtChallenge",
+      "Tower.Continue",
+      "Tower.Gold"
+    ],
+    "rate_limit": 500,
+    "timeout": 300000,
+    "on_error": [
+      "Tower.Timeout"
+    ]
+  },
+  "Tower.StopAtChallenge": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "tower/start.png",
+        "roi": [
+          860,
+          400,
+          420,
+          320
+        ],
+        "threshold": 0.8,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "StopTask",
+      "param": {}
+    }
+  },
+  "Tower.Continue": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "tower/continue.png",
+        "roi": [
+          240,
+          450,
+          800,
+          270
+        ],
+        "threshold": 0.7,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "next": [
+      "Tower.ContinueGone"
+    ],
+    "pre_delay": 100,
+    "post_delay": 600,
+    "rate_limit": 400,
+    "timeout": 10000,
+    "on_error": [
+      "Tower.Timeout"
+    ]
+  },
+  "Tower.ContinueGone": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "tower/continue.png",
+        "roi": [
+          240,
+          450,
+          800,
+          270
+        ],
+        "threshold": 0.7,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    },
+    "inverse": true,
+    "next": [
+      "Tower.Helper",
+      "Tower.Challenge",
+      "Tower.StopAtChallenge",
+      "Tower.Continue",
+      "Tower.Gold"
+    ],
+    "rate_limit": 400,
+    "timeout": 45000,
+    "on_error": [
+      "Tower.Timeout"
+    ]
+  },
+  "Tower.Gold": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "tower/gold.png",
+        "roi": [
+          0,
+          0,
+          650,
+          330
+        ],
+        "threshold": 0.7,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {
+        "target": true
+      }
+    },
+    "next": [
+      "Tower.GoldGone"
+    ],
+    "pre_delay": 100,
+    "post_delay": 600,
+    "rate_limit": 400,
+    "timeout": 10000,
+    "on_error": [
+      "Tower.Timeout"
+    ]
+  },
+  "Tower.GoldGone": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "tower/gold.png",
+        "roi": [
+          0,
+          0,
+          650,
+          330
+        ],
+        "threshold": 0.7,
+        "method": 5
+      }
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    },
+    "inverse": true,
+    "next": [
+      "Tower.Helper",
+      "Tower.Challenge",
+      "Tower.StopAtChallenge",
+      "Tower.Continue",
+      "Tower.Gold"
+    ],
+    "rate_limit": 400,
+    "timeout": 45000,
+    "on_error": [
+      "Tower.Timeout"
+    ]
+  },
+  "Tower.Timeout": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "StopTask",
+      "param": {}
+    }
+  }
+}

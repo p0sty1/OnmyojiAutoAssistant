@@ -1,0 +1,105 @@
+{
+  "coordinate_space": [
+    1280,
+    720
+  ],
+  "scale": "2/3",
+  "interpolation": "cv2.INTER_AREA",
+  "templates": {
+    "common/helper.png": {
+      "source_name": "helper.png",
+      "source_sha256": "f406ff1f1182d7e4fea7cefa5251b64276f86438c29071ab709e8ad7701e3541",
+      "source_size": [
+        87,
+        79
+      ],
+      "output_sha256": "e128043463c8c92f0691d1c517d23100f004aaa362434687e3b87dbe8133dcc5",
+      "output_size": [
+        58,
+        53
+      ]
+    },
+    "realm_raid/page.png": {
+      "source_name": "tupo.png",
+      "source_sha256": "0139a5dd3cfb189cfb7716e45fdfb47f132cd86eb6d391241c9706cfb29ec976",
+      "source_size": [
+        1552,
+        205
+      ],
+      "output_sha256": "87eb9bd5622be1be176caf8aeb51f397fa3a8832843b45e9c05314fa5c05d634",
+      "output_size": [
+        1035,
+        137
+      ]
+    },
+    "realm_raid/start.png": {
+      "source_name": "start.png",
+      "source_sha256": "21db861371e0c779e803529b03e722f959a5f4a6e7bb78527d495eb29be43c90",
+      "source_size": [
+        225,
+        107
+      ],
+      "output_sha256": "f461fd2f0587710da05ebd770d94573b08ac743a1194d9f70a2e33234bce2f9a",
+      "output_size": [
+        150,
+        71
+      ]
+    },
+    "realm_raid/reward.png": {
+      "source_name": "End.png",
+      "source_sha256": "e3879ad248907e1c55c04bd0ea4618c29180ce897d1ffb2e8c6f09e47e4dea60",
+      "source_size": [
+        317,
+        284
+      ],
+      "output_sha256": "b996ab586857f79da0597344143f3a01bf93778f1ac6bc08fdb083b00b44ab6d",
+      "output_size": [
+        211,
+        189
+      ]
+    },
+    "realm_raid/confirm.png": {
+      "source_name": "confirm.png",
+      "source_sha256": "0ebc1b7bd4b8dc2ff606975dea12c5e9ddce6df394c384427b9676e782131ab5",
+      "source_size": [
+        215,
+        117
+      ],
+      "output_sha256": "f580acdfadd8b946cd86f5c83e01cd1c505c006bec6fdf9d3c7a12ea35a8ce5e",
+      "output_size": [
+        143,
+        78
+      ]
+    },
+    "realm_raid/retry.png": {
+      "source_name": "retry.png",
+      "source_sha256": "4c1d557160290285f9307c5e7890e2ffb90fd133ddaf12a9a1926cc3d5fd4dfe",
+      "source_size": [
+        152,
+        164
+      ],
+      "output_sha256": "d76bd2d0e07b201feb8992d1933380d59c8e90bf9e2494f5a155d6fbaa159ba2",
+      "output_size": [
+        101,
+        109
+      ]
+    },
+    "realm_raid/confirm_retry.png": {
+      "source_name": "confirm2.png",
+      "source_sha256": "c58e671f0db5765bcde46d75ef62ada2494fb0558daabe02352995ee4f8d8b70",
+      "source_size": [
+        291,
+        119
+      ],
+      "output_sha256": "392b1ce616460b2fc90d51315cec03d2f7df3ca464f6040d95d5770995b89f81",
+      "output_size": [
+        194,
+        79
+      ]
+    }
+  },
+  "fixtures": {
+    "positive_composite.png": "Synthetic: every scaled template is pasted once inside its configured 720p ROI.",
+    "battle_negative.png": "Real current-battle screen.png scaled from 1920x1080 to 1280x720. It must not match the reward template."
+  }
+}

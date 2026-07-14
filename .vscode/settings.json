@@ -1,0 +1,22 @@
+{
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "/interface.json"
+            ],
+            "url": "https://raw.githubusercontent.com/MaaXYZ/MaaFramework/v5.12.1/tools/interface.schema.json"
+        },
+        {
+            "fileMatch": [
+                "/tasks/*.json"
+            ],
+            "url": "https://raw.githubusercontent.com/MaaXYZ/MaaFramework/v5.12.1/tools/interface_import.schema.json"
+        },
+        {
+            "fileMatch": [
+                "/resource_pack/base/pipeline/**/*.json"
+            ],
+            "url": "https://raw.githubusercontent.com/MaaXYZ/MaaFramework/v5.12.1/tools/pipeline.schema.json"
+        }
+    ]
+}

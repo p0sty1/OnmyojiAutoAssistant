@@ -1,0 +1,38 @@
+name: validate-and-build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  windows-x64:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install development dependencies
+        shell: pwsh
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\python.exe -m pip install --disable-pip-version-check -r requirements-dev.txt
+
+      - name: Install pinned GUI and framework runtime
+        shell: pwsh
+        run: .\tools\install_runtime.ps1
+
+      - name: Validate and build package
+        shell: pwsh
+        run: .\tools\build_release.ps1 -Version 0.1.${{ github.run_number }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: YYS520Helper-win-x64
+          path: release/*.zip
+          if-no-files-found: error

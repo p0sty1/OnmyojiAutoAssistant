@@ -1,0 +1,11 @@
+* text=auto
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+*.py text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.png binary
+
+# Keep verbatim upstream license formatting out of whitespace checks.
+third_party/** -whitespace

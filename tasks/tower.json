@@ -1,0 +1,99 @@
+{
+    "task": [
+        {
+            "name": "yys_tower",
+            "label": "活动爬塔",
+            "entry": "Tower.Entry",
+            "default_check": false,
+            "description": "从活动挑战界面开始，自动挑战、处理结算并进入下一轮。",
+            "controller": [
+                "Android"
+            ],
+            "resource": [
+                "base"
+            ],
+            "option": [
+                "tower_run_count",
+                "tower_auto_popup"
+            ]
+        }
+    ],
+    "option": {
+        "tower_run_count": {
+            "type": "select",
+            "label": "运行次数",
+            "description": "完成指定轮数后，在下一次回到挑战界面时安全停止。",
+            "default_case": "x10",
+            "cases": [
+                {
+                    "name": "x1",
+                    "label": "1 次",
+                    "pipeline_override": {
+                        "Tower.Challenge": {
+                            "max_hit": 1
+                        }
+                    }
+                },
+                {
+                    "name": "x5",
+                    "label": "5 次",
+                    "pipeline_override": {
+                        "Tower.Challenge": {
+                            "max_hit": 5
+                        }
+                    }
+                },
+                {
+                    "name": "x10",
+                    "label": "10 次",
+                    "pipeline_override": {
+                        "Tower.Challenge": {
+                            "max_hit": 10
+                        }
+                    }
+                },
+                {
+                    "name": "x30",
+                    "label": "30 次",
+                    "pipeline_override": {
+                        "Tower.Challenge": {
+                            "max_hit": 30
+                        }
+                    }
+                }
+            ]
+        },
+        "tower_auto_popup": {
+            "type": "switch",
+            "label": "自动处理加成/弹窗",
+            "description": "识别并处理助战与金币加成等已知弹窗。",
+            "default_case": "Yes",
+            "cases": [
+                {
+                    "name": "Yes",
+                    "label": "开启",
+                    "pipeline_override": {
+                        "Tower.Helper": {
+                            "enabled": true
+                        },
+                        "Tower.Gold": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "No",
+                    "label": "关闭",
+                    "pipeline_override": {
+                        "Tower.Helper": {
+                            "enabled": false
+                        },
+                        "Tower.Gold": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
