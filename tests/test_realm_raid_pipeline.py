@@ -22,11 +22,18 @@ FIXTURE_ROOT = ROOT / "tests" / "fixtures" / "realm_raid"
 STATE_NODES = {
     "YYSRealmRaid.Helper": "common/helper.png",
     "YYSRealmRaid.Page": "realm_raid/page.png",
-    "YYSRealmRaid.PageStart": "realm_raid/start.png",
     "YYSRealmRaid.PageReward": "realm_raid/reward.png",
     "YYSRealmRaid.ConfirmExit": "realm_raid/confirm.png",
     "YYSRealmRaid.Retry": "realm_raid/retry.png",
     "YYSRealmRaid.ConfirmRetry": "realm_raid/confirm_retry.png",
+}
+START_NODES = (
+    "YYSRealmRaid.PageStart",
+    "YYSRealmRaid.AfterSlotStart",
+    "YYSRealmRaid.GlobalStart",
+)
+ALL_TEMPLATE_NODES = STATE_NODES | {
+    node_name: "realm_raid/start.png" for node_name in START_NODES
 }
 
 
@@ -128,7 +135,7 @@ class RealmRaidPipelineTests(unittest.TestCase):
             self.assertEqual(digest, expected["output_sha256"], relative_path)
 
     def test_template_rois_are_inside_the_720p_coordinate_space(self) -> None:
-        for node_name, relative_path in STATE_NODES.items():
+        for node_name, relative_path in ALL_TEMPLATE_NODES.items():
             params = self.pipeline[node_name]["recognition"]["param"]
             self.assertEqual(params["template"], relative_path)
             x, y, width, height = params["roi"]
@@ -146,7 +153,6 @@ class RealmRaidPipelineTests(unittest.TestCase):
         expected_locations = {
             "YYSRealmRaid.Helper": (1200, 170),
             "YYSRealmRaid.Page": (120, 20),
-            "YYSRealmRaid.PageStart": (1100, 600),
             "YYSRealmRaid.PageReward": (500, 300),
             "YYSRealmRaid.ConfirmExit": (360, 600),
             "YYSRealmRaid.Retry": (1100, 300),
@@ -159,6 +165,37 @@ class RealmRaidPipelineTests(unittest.TestCase):
             score, location = match_in_roi(screen, template, params["roi"])
             self.assertGreaterEqual(score, params["threshold"], node_name)
             self.assertEqual(location, expected_locations[node_name], node_name)
+
+    def test_start_nodes_cover_observed_real_popup_positions(self) -> None:
+        template = read_image(IMAGE_ROOT / "realm_raid" / "start.png")
+        template_height, template_width = template.shape[:2]
+        observed_locations = ((310, 354), (642, 354), (310, 489))
+        expected_roi = [260, 300, 920, 280]
+
+        for node_name in START_NODES:
+            node = self.pipeline[node_name]
+            params = node["recognition"]["param"]
+            self.assertEqual(params["template"], "realm_raid/start.png")
+            self.assertEqual(params["roi"], expected_roi)
+            self.assertEqual(params["threshold"], 0.8)
+            self.assertEqual(node["action"], {"type": "Click", "param": {"target": True}})
+
+            for expected_location in observed_locations:
+                screen = np.zeros((720, 1280, 3), dtype=np.uint8)
+                x, y = expected_location
+                screen[y : y + template_height, x : x + template_width] = template
+                score, location = match_in_roi(screen, template, params["roi"])
+                self.assertGreaterEqual(score, params["threshold"], node_name)
+                self.assertEqual(location, expected_location, node_name)
+
+        roi_x, roi_y, roi_width, roi_height = expected_roi
+        false_x, false_y = (996, 564)
+        self.assertFalse(
+            roi_x <= false_x
+            and false_x + template_width <= roi_x + roi_width
+            and roi_y <= false_y
+            and false_y + template_height <= roi_y + roi_height
+        )
 
     def test_current_battle_screen_cannot_be_recognized_as_reward(self) -> None:
         screen = read_image(FIXTURE_ROOT / "battle_negative.png")

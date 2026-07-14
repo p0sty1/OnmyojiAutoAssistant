@@ -129,10 +129,10 @@
       "param": {
         "template": "realm_raid/start.png",
         "roi": [
-          860,
-          400,
-          420,
-          320
+          260,
+          300,
+          920,
+          280
         ],
         "threshold": 0.8,
         "method": 5
@@ -294,10 +294,10 @@
       "param": {
         "template": "realm_raid/start.png",
         "roi": [
-          860,
-          400,
-          420,
-          320
+          260,
+          300,
+          920,
+          280
         ],
         "threshold": 0.8,
         "method": 5
@@ -396,10 +396,10 @@
       "param": {
         "template": "realm_raid/start.png",
         "roi": [
-          860,
-          400,
-          420,
-          320
+          260,
+          300,
+          920,
+          280
         ],
         "threshold": 0.8,
         "method": 5
