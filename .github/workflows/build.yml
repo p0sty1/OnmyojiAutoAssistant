@@ -33,6 +33,6 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: YYS520Helper-win-x64
+          name: OnmyojiAutoAssistant-win-x64
           path: release/*.zip
           if-no-files-found: error

@@ -1,11 +1,15 @@
 [CmdletBinding()]
 param(
-    [string]$DestinationRoot = (Split-Path -Parent $PSScriptRoot),
+    [string]$DestinationRoot = '',
     [switch]$Force
 )
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+
+if ([string]::IsNullOrWhiteSpace($DestinationRoot)) {
+    $DestinationRoot = Split-Path -Parent $PSScriptRoot
+}
 
 $Versions = @{
     MaaFramework = 'v5.12.1'
@@ -69,7 +73,7 @@ function Assert-SafeTemporaryPath {
 $root = [IO.Path]::GetFullPath($DestinationRoot)
 New-Item -ItemType Directory -Force -Path $root | Out-Null
 
-$cache = Join-Path ([IO.Path]::GetTempPath()) 'yys520helper-runtime-cache'
+$cache = Join-Path ([IO.Path]::GetTempPath()) 'onmyoji-auto-assistant-runtime-cache'
 New-Item -ItemType Directory -Force -Path $cache | Out-Null
 
 $archives = @{}
@@ -78,7 +82,7 @@ foreach ($artifact in $Artifacts) {
 }
 $importSchemaPath = Get-VerifiedArchive -Artifact $ImportSchema -CacheDirectory $cache
 
-$extractRoot = Join-Path ([IO.Path]::GetTempPath()) ("yys520helper-install-" + [Guid]::NewGuid().ToString('N'))
+$extractRoot = Join-Path ([IO.Path]::GetTempPath()) ("onmyoji-auto-assistant-install-" + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $extractRoot | Out-Null
 
 try {

@@ -1,8 +1,9 @@
 {
     "interface_version": 2,
-    "name": "YYS520Helper",
-    "label": "阴阳师 520 助手",
-    "title": "阴阳师 520 助手",
+    "name": "OnmyojiAutoAssistant",
+    "label": "阴阳师自动助手",
+    "title": "阴阳师自动助手",
+    "icon": "./assets/onmyoji-auto-assistant-logo.png",
     "version": "0.1.0",
     "description": "基于 MaaFramework 的阴阳师自动化项目，包含活动爬塔与个人突破两个独立任务。",
     "welcome": "首次使用前请启动一个 16:9、分辨率不低于 1280×720 的安卓模拟器，并在 MXU 中确认设备已连接。",
@@ -29,7 +30,7 @@
         }
     ],
     "agent": {
-        "child_exec": "./agent/runtime/yys520_agent.exe"
+        "child_exec": "./agent/runtime/onmyoji_auto_assistant_agent.exe"
     },
     "import": [
         "./tasks/tower.json",

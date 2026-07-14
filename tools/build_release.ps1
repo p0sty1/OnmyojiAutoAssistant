@@ -1,16 +1,21 @@
 [CmdletBinding()]
 param(
     [string]$Version = '0.1.0',
-    [string]$ProjectRoot = (Split-Path -Parent $PSScriptRoot),
+    [string]$ProjectRoot = '',
+    [string]$UpdateRepository = '',
     [switch]$SkipTests
 )
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+if ([string]::IsNullOrWhiteSpace($ProjectRoot)) {
+    $ProjectRoot = Split-Path -Parent $PSScriptRoot
+}
+
 $root = [IO.Path]::GetFullPath($ProjectRoot)
 $releaseRoot = Join-Path $root 'release'
-$packageName = "YYS520Helper-win-x64-v$Version"
+$packageName = "OnmyojiAutoAssistant-win-x64-v$Version"
 $packageRoot = Join-Path $releaseRoot $packageName
 $zipPath = Join-Path $releaseRoot "$packageName.zip"
 
@@ -63,7 +68,8 @@ $files = @(
     'interface.json',
     'README.md',
     'THIRD_PARTY_NOTICES.md',
-    'Start YYS Helper.cmd',
+    'Start Onmyoji Auto Assistant.cmd',
+    'update-settings.json',
     'mxu.exe'
 )
 foreach ($relative in $files) {
@@ -74,7 +80,7 @@ foreach ($relative in $files) {
     Copy-Item -LiteralPath $source -Destination (Join-Path $packageRoot $relative) -Force
 }
 
-foreach ($relative in @('resource_pack', 'tasks', 'docs', 'maafw', 'third_party')) {
+foreach ($relative in @('assets', 'resource_pack', 'tasks', 'docs', 'maafw', 'third_party')) {
     $source = Join-Path $root $relative
     if (Test-Path -LiteralPath $source) {
         Copy-Item -LiteralPath $source -Destination (Join-Path $packageRoot $relative) -Recurse -Force
@@ -98,7 +104,9 @@ foreach ($generatedPath in @(
 }
 
 New-Item -ItemType Directory -Force -Path (Join-Path $packageRoot 'tools') | Out-Null
-Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'start.ps1') -Destination (Join-Path $packageRoot 'tools\start.ps1') -Force
+foreach ($tool in @('start.ps1', 'update.ps1')) {
+    Copy-Item -LiteralPath (Join-Path $PSScriptRoot $tool) -Destination (Join-Path $packageRoot "tools\$tool") -Force
+}
 
 $interfacePath = Join-Path $packageRoot 'interface.json'
 $interface = Get-Content -LiteralPath $interfacePath -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -109,7 +117,21 @@ $interface.version = $Version
     [Text.UTF8Encoding]::new($false)
 )
 
+$updateSettingsPath = Join-Path $packageRoot 'update-settings.json'
+$updateSettings = Get-Content -LiteralPath $updateSettingsPath -Raw -Encoding UTF8 | ConvertFrom-Json
+$updateSettings.repository = $UpdateRepository
+[IO.File]::WriteAllText(
+    $updateSettingsPath,
+    ($updateSettings | ConvertTo-Json -Depth 10),
+    [Text.UTF8Encoding]::new($false)
+)
+
 Compress-Archive -LiteralPath $packageRoot -DestinationPath $zipPath -CompressionLevel Optimal
 $hash = (Get-FileHash -LiteralPath $zipPath -Algorithm SHA256).Hash.ToLowerInvariant()
+[IO.File]::WriteAllText(
+    "$zipPath.sha256",
+    "$hash *$([IO.Path]::GetFileName($zipPath))`n",
+    [Text.UTF8Encoding]::new($false)
+)
 Write-Host "Release: $zipPath"
 Write-Host "SHA-256: $hash"

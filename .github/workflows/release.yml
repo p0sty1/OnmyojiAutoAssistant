@@ -1,0 +1,56 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  windows-x64:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install development dependencies
+        shell: pwsh
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\python.exe -m pip install --disable-pip-version-check -r requirements-dev.txt
+
+      - name: Install pinned GUI and framework runtime
+        shell: pwsh
+        run: .\tools\install_runtime.ps1
+
+      - name: Build release package
+        shell: pwsh
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+          UPDATE_REPOSITORY: ${{ github.repository }}
+        run: |
+          $version = $env:RELEASE_TAG.TrimStart('v')
+          .\tools\build_release.ps1 -Version $version -UpdateRepository $env:UPDATE_REPOSITORY
+
+          $package = Get-ChildItem .\release\*.zip | Select-Object -First 1
+          $manifest = [ordered]@{
+            schemaVersion = 1
+            version = $version
+            package = $package.Name
+            sha256 = (Get-FileHash -LiteralPath $package.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          }
+          $manifest | ConvertTo-Json | Set-Content -LiteralPath .\release\update.json -Encoding utf8
+
+      - name: Publish GitHub Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release create $env:RELEASE_TAG .\release\*.zip .\release\*.zip.sha256 .\release\update.json --generate-notes

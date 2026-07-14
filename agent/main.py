@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 if getattr(sys, "frozen", False):
-    # Packaged layout: <project>/agent/runtime/yys520_agent.exe
+    # Packaged layout: <project>/agent/runtime/onmyoji_auto_assistant_agent.exe
     PROJECT_ROOT = Path(sys.executable).resolve().parents[2]
 else:
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -21,7 +21,7 @@ from agent import realm_raid_agent  # noqa: E402, F401
 def main(argv: list[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
     if not args:
-        print("Usage: yys520_agent <socket_id>")
+        print("Usage: onmyoji_auto_assistant_agent <socket_id>")
         return 2
 
     Tasker.set_log_dir(str(PROJECT_ROOT / "debug"))

@@ -81,7 +81,7 @@ PI 使用发布期入口：
 
 ```json
 {
-    "child_exec": "./agent/runtime/yys520_agent.exe"
+    "child_exec": "./agent/runtime/onmyoji_auto_assistant_agent.exe"
 }
 ```
 

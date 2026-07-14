@@ -1,1 +1,1 @@
-"""Python Agent extensions for yys520helper."""
+"""Python Agent extensions for OnmyojiAutoAssistant."""

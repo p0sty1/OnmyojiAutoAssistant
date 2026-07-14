@@ -10,6 +10,7 @@
 /tools/schemas/
 /config/
 /debug/
+/.updates/
 __pycache__/
 *.pyc
 

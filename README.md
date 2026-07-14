@@ -1,6 +1,6 @@
-# 阴阳师 520 助手
+# Onmyoji Auto Assistant
 
-这是一个基于 MaaFramework ProjectInterface V2 的 Windows 自动化项目。首版提供两个相互独立、共享同一套设备连接与资源加载机制的任务：
+这是一个基于 MaaFramework ProjectInterface V2 的 Windows 阴阳师自动化项目。首版提供两个相互独立、共享同一套设备连接与资源加载机制的任务：
 
 - `yys_tower`：活动爬塔，由 JSON Pipeline 完成识别、点击、结算循环与安全停止。
 - `yys_realm_raid`：个人突破，由 Pipeline 处理常规界面，由 Agent 保存九宫格进度和第九格特殊规则。
@@ -9,7 +9,7 @@
 
 ## 直接使用
 
-当前工作区已经装好 MaaFramework v5.12.1、MXU v2.3.0 和独立 Agent。启动模拟器后，双击 `Start YYS Helper.cmd`（或 `启动助手.cmd`），勾选任务并点击开始即可。首次点击开始时，MXU 会自动扫描 ADB；没有历史设备时会连接扫描结果中的第一台，以后按已保存的设备名重连。
+当前工作区已经装好 MaaFramework v5.12.1、MXU v2.3.0 和独立 Agent。启动模拟器后，双击 `Start Onmyoji Auto Assistant.cmd`（或 `启动助手.cmd`），勾选任务并点击开始即可。每次启动会自动检查 GitHub Release；网络不可用或没有新版本时会直接进入 MXU。首次点击开始时，MXU 会自动扫描 ADB；没有历史设备时会连接扫描结果中的第一台，以后按已保存的设备名重连。
 
 如果同时运行多台模拟器，请第一次先在连接面板选对设备再启动任务。模拟器未开启 ADB、真机尚未完成首次授权或游戏画面不是 16:9 时，程序无法代替系统完成这些前置条件。
 
@@ -62,7 +62,7 @@ VS Code 打开项目后会使用 MaaFramework 官方 schema 校验 `interface.js
 .\tools\build_release.ps1 -Version 0.1.0
 ```
 
-产物位于 `release/YYS520Helper-win-x64-v0.1.0.zip`。构建会依次执行官方 schema、离线识别、状态机、MaaFramework 资源加载以及打包 Agent 握手测试。
+产物位于 `release/OnmyojiAutoAssistant-win-x64-v0.1.0.zip`。构建会依次执行官方 schema、离线识别、状态机、MaaFramework 资源加载以及打包 Agent 握手测试。
 
 ## 使用 MXU
 
@@ -74,12 +74,18 @@ maafw/MaaFramework.dll
 maafw/MaaToolkit.dll
 interface.json
 resource_pack/base/
-agent/runtime/yys520_agent.exe
+agent/runtime/onmyoji_auto_assistant_agent.exe
 ```
 
 启动模拟器后运行启动脚本或 `mxu.exe`。MXU 根据 `type: "Adb"` 调用 MaaToolkit 发现设备；本项目不硬编码模拟器安装目录、ADB 路径或 serial。多台设备时在 MXU 中选择目标实例，手动 ADB 地址只作为客户端的高级兜底。
 
 任务默认均不勾选，避免连接成功后误运行。活动爬塔可选择运行轮数，并可关闭助战/金币等弹窗处理；个人突破首版固定使用经旧脚本验证的九宫格策略，不把卡死次数伪装成“运行次数”。
+
+## 自动更新
+
+发布包在每次启动时都会检查 GitHub Releases。检测到新版本后，用户可以选择下载并立即安装；更新器在启动 MXU 前校验下载包的 SHA-256、保留上一版本备份，并保留 `config`、`debug` 与 `cache` 目录。网络错误、用户跳过或校验失败均不会阻止启动当前版本。
+
+发布正式版时推送 `vX.Y.Z` 标签。GitHub Actions 会构建完整包、生成 `update.json` 元数据并创建 GitHub Release；打包时会自动写入对应仓库地址，因此终端用户不需要配置更新服务器。
 
 详细开发约定与验收步骤见 [开发文档](docs/development.md)。
 

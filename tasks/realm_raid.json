@@ -3,6 +3,7 @@
         {
             "name": "yys_realm_raid",
             "label": "个人突破",
+            "icon": "./assets/onmyoji-auto-assistant-realm-raid-icon.png",
             "entry": "YYSRealmRaid",
             "default_check": false,
             "description": "按九宫格顺序挑战，并由 Agent 维护进度、第九格特殊退出次数与卡死保护。首版采用固定安全策略。",

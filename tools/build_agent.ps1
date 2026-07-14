@@ -1,10 +1,14 @@
 [CmdletBinding()]
 param(
-    [string]$ProjectRoot = (Split-Path -Parent $PSScriptRoot)
+    [string]$ProjectRoot = ''
 )
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+
+if ([string]::IsNullOrWhiteSpace($ProjectRoot)) {
+    $ProjectRoot = Split-Path -Parent $PSScriptRoot
+}
 
 $root = [IO.Path]::GetFullPath($ProjectRoot)
 $python = Join-Path $root '.venv\Scripts\python.exe'
@@ -25,7 +29,7 @@ if (-not (Test-Path -LiteralPath $entry)) {
     --noconfirm `
     --clean `
     --onedir `
-    --name yys520_agent `
+    --name onmyoji_auto_assistant_agent `
     --distpath $dist `
     --workpath $work `
     --specpath $spec `
@@ -43,8 +47,8 @@ if (Test-Path -LiteralPath $output) {
     Remove-Item -LiteralPath $resolvedOutput -Recurse -Force
 }
 
-Copy-Item -LiteralPath (Join-Path $dist 'yys520_agent') -Destination $output -Recurse
-$exe = Join-Path $output 'yys520_agent.exe'
+Copy-Item -LiteralPath (Join-Path $dist 'onmyoji_auto_assistant_agent') -Destination $output -Recurse
+$exe = Join-Path $output 'onmyoji_auto_assistant_agent.exe'
 if (-not (Test-Path -LiteralPath $exe)) {
     throw "Agent executable was not produced: $exe"
 }
